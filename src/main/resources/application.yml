@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: windsurfers-weather
+
+weatherbit:
+  api:
+    key: "37008afca1134ffe889b7567b38d7977"
+    url: "https://api.weatherbit.io/v2.0/forecast/daily"
