@@ -1,20 +1,20 @@
 package com.example.windsurfers_weather.entity;
 
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Builder
 @Setter
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class Location {
 
-    private final String name;
-    private final String country;
-    private final double lat;
-    private final double lon;
+    private String name;
+    private String country;
+    private double lat;
+    private double lon;
 
 }

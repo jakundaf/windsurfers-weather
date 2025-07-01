@@ -19,4 +19,5 @@ public class WeatherService {
     public List<Location> getLocations() {
         return locations;
     }
+
 }
