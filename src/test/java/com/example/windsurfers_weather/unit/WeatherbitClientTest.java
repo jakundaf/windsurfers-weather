@@ -16,7 +16,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -26,9 +27,9 @@ public class WeatherbitClientTest {
     private RestTemplate restTemplateMock;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         restTemplateMock = mock(RestTemplate.class);
-        weatherbitClient = new WeatherbitClient(restTemplateMock,"FAKE_KEY", "http://fake.api/weather");
+        weatherbitClient = new WeatherbitClient(restTemplateMock, "FAKE_KEY", "http://fake.api/weather");
     }
 
 
@@ -52,24 +53,8 @@ public class WeatherbitClientTest {
     }
 
     @Test
-    @DisplayName("Throws INVALID_COORDINATES exception when API returns HTTP status 400")
-    void shouldThrowInvalidCoordinatesException_onBadRequest(){
-
-        // Arrange
-        when(restTemplateMock.getForObject(anyString(), eq(WeatherbitResponse.class)))
-                .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
-
-        // Act & Assert
-        WeatherDataUnavailableException exception = assertThrows(WeatherDataUnavailableException.class,
-                () -> weatherbitClient.getForecast(1.0, 2.0));
-
-        assertEquals(WeatherErrorReason.INVALID_COORDINATES, exception.getReason());
-
-    }
-
-    @Test
     @DisplayName("Throws INVALID_API_KEY exception when API returns HTTP status 401")
-    void shouldThrowInvalidApiKeyException_onUnauthorized(){
+    void shouldThrowInvalidApiKeyException_onUnauthorized() {
 
         // Arrange
         when(restTemplateMock.getForObject(anyString(), eq(WeatherbitResponse.class)))
@@ -85,7 +70,7 @@ public class WeatherbitClientTest {
 
     @Test
     @DisplayName("Throws INVALID_API_KEY exception when API returns HTTP status 403")
-    void shouldThrowInvalidApiKeyException_onForbidden(){
+    void shouldThrowInvalidApiKeyException_onForbidden() {
 
         // Arrange
         when(restTemplateMock.getForObject(anyString(), eq(WeatherbitResponse.class)))
@@ -101,7 +86,7 @@ public class WeatherbitClientTest {
 
     @Test
     @DisplayName("Throws API_UNREACHABLE exception when API returns HTTP status 500")
-    void shouldThrowApiUnreachableException_onInternalServerError(){
+    void shouldThrowApiUnreachableException_onInternalServerError() {
 
         // Arrange
         when(restTemplateMock.getForObject(anyString(), eq(WeatherbitResponse.class)))

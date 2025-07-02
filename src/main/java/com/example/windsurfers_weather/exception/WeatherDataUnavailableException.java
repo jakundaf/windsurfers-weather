@@ -3,12 +3,10 @@ package com.example.windsurfers_weather.exception;
 
 import com.example.windsurfers_weather.utility.WeatherErrorReason;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.LocalDate;
 
-@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+
 @Getter
 public class WeatherDataUnavailableException extends RuntimeException {
 
@@ -17,10 +15,10 @@ public class WeatherDataUnavailableException extends RuntimeException {
     private final double lon;
     private final WeatherErrorReason reason;
 
-    public WeatherDataUnavailableException( LocalDate date, double lat, double lon, WeatherErrorReason reason) {
-        super(String.format("No weather data found for \n"
-                + "lon: %.4f \n"
-                + "lat: %.4f \n" + "in day %s \n"
+    public WeatherDataUnavailableException(LocalDate date, double lat, double lon, WeatherErrorReason reason) {
+        super(String.format("No weather data found for "
+                + "lon: %.4f "
+                + "lat: %.4f " + "in day %s, "
                 + "%s", lon, lat, date, reason));
         this.lat = lat;
         this.lon = lon;
@@ -28,10 +26,10 @@ public class WeatherDataUnavailableException extends RuntimeException {
         this.reason = reason;
     }
 
-    public WeatherDataUnavailableException( double lat, double lon, WeatherErrorReason reason) {
-        super(String.format("No weather data found for \n"
-                + "lon: %.4f \n"
-                + "lat: %.4f \n"
+    public WeatherDataUnavailableException(double lat, double lon, WeatherErrorReason reason) {
+        super(String.format("No weather data found for "
+                + "lon: %.4f "
+                + "lat: %.4f,"
                 + "%s", lon, lat, reason));
         this.lat = lat;
         this.lon = lon;

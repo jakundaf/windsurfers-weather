@@ -1,7 +1,10 @@
 package com.example.windsurfers_weather.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,7 +16,7 @@ import java.util.List;
 public class WeatherbitResponse {
 
     @JsonProperty("data")
-    private List<ForecastDay>  forecastDayList;
+    private List<ForecastDay> forecastDayList;
 
     @Builder
     @Data
