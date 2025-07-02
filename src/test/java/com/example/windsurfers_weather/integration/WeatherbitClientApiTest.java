@@ -33,8 +33,6 @@ public class WeatherbitClientApiTest {
                 () -> weatherbitClient.getForecast(lat, lon)
         );
 
-        System.out.println(exception.getStackTrace() + " message: " + exception.getMessage());
-
         assertEquals(WeatherErrorReason.API_UNREACHABLE, exception.getReason());
     }
 }

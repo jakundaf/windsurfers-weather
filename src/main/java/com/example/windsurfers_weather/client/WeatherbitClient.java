@@ -22,7 +22,7 @@ public class WeatherbitClient {
     private final RestTemplate restTemplate;
 
     public WeatherbitClient(RestTemplate restTemplate, @Value("${weatherbit.api.url}") String apiUrl,
-    @Value("${weatherbit.api.key}") String apiKey) {
+                            @Value("${weatherbit.api.key}") String apiKey) {
         this.restTemplate = restTemplate;
         this.apiUrl = apiUrl;
         this.apiKey = apiKey;
@@ -50,14 +50,14 @@ public class WeatherbitClient {
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             HttpStatusCode status = e.getStatusCode();
 
-            if (status == HttpStatus.BAD_REQUEST){
-                throw new WeatherDataUnavailableException(lat, lon, WeatherErrorReason.INVALID_COORDINATES);
+            if (status == HttpStatus.BAD_REQUEST) {
+                throw new WeatherDataUnavailableException(lat, lon, WeatherErrorReason.NO_DATA_FOR_DATE);
 
-            } else if (status == HttpStatus.UNAUTHORIZED || status == HttpStatus.FORBIDDEN){
+            } else if (status == HttpStatus.UNAUTHORIZED || status == HttpStatus.FORBIDDEN) {
                 throw new WeatherDataUnavailableException(lat, lon, WeatherErrorReason.INVALID_API_KEY);
 
             } else if (status == HttpStatus.INTERNAL_SERVER_ERROR || status == HttpStatus.BAD_GATEWAY
-                || status == HttpStatus.SERVICE_UNAVAILABLE || status == HttpStatus.GATEWAY_TIMEOUT) {
+                    || status == HttpStatus.SERVICE_UNAVAILABLE || status == HttpStatus.GATEWAY_TIMEOUT) {
                 throw new WeatherDataUnavailableException(lat, lon, WeatherErrorReason.API_UNREACHABLE);
 
             } else {
@@ -67,8 +67,7 @@ public class WeatherbitClient {
         } catch (ResourceAccessException e) {
             throw new WeatherDataUnavailableException(lat, lon, WeatherErrorReason.API_UNREACHABLE);
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new WeatherDataUnavailableException(lat, lon, WeatherErrorReason.UNKNOWN);
 
         }
