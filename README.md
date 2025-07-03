@@ -52,6 +52,7 @@ weatherbit:
 To run the project use simple Maven commands:
 
 mvn clean install
+
 mvn spring-boot:run
 
 Then API should be available at `http://localhost:8080`
