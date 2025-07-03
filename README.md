@@ -62,8 +62,10 @@ Then API should be available at `http://localhost:8080`
 ## 🌐 Example API Request
 
 GET /api/weather/best-location?date=2025-07-03
+
 ✅ Response 200 OK
 
+```
 {
   "location": {
     "name": "Fortaleza",
@@ -78,5 +80,6 @@ GET /api/weather/best-location?date=2025-07-03
   },
   "score": 56.7
 }
+```
 
 ---
