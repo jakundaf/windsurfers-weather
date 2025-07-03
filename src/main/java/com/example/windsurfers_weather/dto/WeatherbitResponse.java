@@ -26,9 +26,9 @@ public class WeatherbitResponse {
         private LocalDate datetime;
         private double lon;
         private double lan;
-        private float wind_spd;
-        private float wind_dir;
-        private float temp;
+        private double wind_spd;
+        private double wind_dir;
+        private double temp;
     }
 
 

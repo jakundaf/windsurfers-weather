@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -19,6 +21,8 @@ import java.util.Optional;
 
 @Service
 public class WeatherService {
+
+    private DecimalFormat decimalFormat = new DecimalFormat("##.#", new DecimalFormatSymbols());
 
     private static final Logger logger = LoggerFactory.getLogger(WeatherService.class);
 
@@ -47,7 +51,9 @@ public class WeatherService {
                         WeatherData dataForDate = response.getForecastDayList().stream()
                                 .filter(day -> day.getDatetime().equals(date))
                                 .findFirst()
-                                .map(day -> new WeatherData(day.getTemp(), day.getWind_spd(), day.getWind_dir()))
+                                .map(day -> new WeatherData(Double.parseDouble(decimalFormat.format(day.getTemp())),
+                                        Double.parseDouble(decimalFormat.format(day.getWind_spd())),
+                                        Double.parseDouble(decimalFormat.format(day.getWind_dir()))))
                                 .orElse(null);
 
                         if (dataForDate == null) {
@@ -75,4 +81,6 @@ public class WeatherService {
     private double calculateScore(WeatherData data) {
         return data.getWindSpeed() * 3 + data.getTemperature();
     }
+
+
 }

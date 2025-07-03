@@ -147,7 +147,7 @@ class WeatherServiceTest {
         }
 
 
-        private void mockForecast(String city, float windSpeed, float windDirection) throws WeatherDataUnavailableException {
+        private void mockForecast(String city, double windSpeed, double windDirection) throws WeatherDataUnavailableException {
             var location = weatherService.getLocations().stream()
                     .filter(l -> l.getName().equals(city))
                     .findFirst()
