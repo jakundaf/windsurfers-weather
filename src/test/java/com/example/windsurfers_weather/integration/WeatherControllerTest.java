@@ -25,8 +25,10 @@ public class WeatherControllerTest {
     @DisplayName("Returns 200 and correct body when date is valid and suitable location found")
     void shouldReturnBestLocation_WhenDataIsValidAndLocationFound() throws Exception {
 
+        // Arrange
         LocalDate date = LocalDate.now().plusDays(1);
 
+        // Act & Assert
         mockMvc.perform(get("/api/weather/best-location")
                         .param("date", date.toString())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -40,8 +42,10 @@ public class WeatherControllerTest {
     @DisplayName("Returns 204 No Content when no suitable location found - date out of 16 days range")
     void shouldReturnNoContent_WhenNoDataAvailable() throws Exception {
 
+        // Arrange
         String date = LocalDate.now().plusDays(20).toString();
 
+        // Act & Assert
         mockMvc.perform(get("/api/weather/best-location")
                         .param("date", date)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -52,6 +56,7 @@ public class WeatherControllerTest {
     @DisplayName("Returns 400 Bad Request when date is not in ISO format")
     void shouldReturnBadRequest_WhenInvalidDateFormat() throws Exception {
 
+        // Act & Assert
         mockMvc.perform(get("/api/weather/best-location")
                         .param("date", "invalid-date")
                         .contentType(MediaType.APPLICATION_JSON))

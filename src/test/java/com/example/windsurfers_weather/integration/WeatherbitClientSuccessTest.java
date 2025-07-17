@@ -21,11 +21,15 @@ public class WeatherbitClientSuccessTest {
     @Test
     @DisplayName("Returns forecast when lat/lon and API key are valid")
     void shouldReturnForecast_WhenLatAndLonAndApiKeyAreValid() {
+
+        // Arrange
         double lat = 54.7084;
         double lon = 18.6554;
 
+        // Act
         WeatherbitResponse response = weatherbitClient.getForecast(lat, lon);
 
+        // Assert
         assertNotNull(response);
         assertNotNull(response.getForecastDayList());
         assertFalse(response.getForecastDayList().isEmpty());
