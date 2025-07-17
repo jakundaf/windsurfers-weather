@@ -1,0 +1,66 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: jakundaf
+      changes:
+        - createTable:
+            tableName: location
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: country
+                  type: VARCHAR(255)
+              - column:
+                  name: lat
+                  type: DOUBLE
+              - column:
+                  name: lon
+                  type: DOUBLE
+
+        - insert:
+            tableName: location
+            columns:
+              - column: { name: name, value: "Jastarnia" }
+              - column: { name: country, value: "Poland" }
+              - column: { name: lat, valueNumeric: 54.7084 }
+              - column: { name: lon, valueNumeric: 18.6554 }
+
+        - insert:
+            tableName: location
+            columns:
+              - column: { name: name, value: "Bridgetown" }
+              - column: { name: country, value: "Barbados" }
+              - column: { name: lat, valueNumeric: 13.1035 }
+              - column: { name: lon, valueNumeric: -59.6032 }
+
+        - insert:
+            tableName: location
+            columns:
+              - column: { name: name, value: "Fortaleza" }
+              - column: { name: country, value: "Brazil" }
+              - column: { name: lat, valueNumeric: -3.7318 }
+              - column: { name: lon, valueNumeric: -38.5266 }
+
+        - insert:
+            tableName: location
+            columns:
+              - column: { name: name, value: "Pissouri" }
+              - column: { name: country, value: "Cyprus" }
+              - column: { name: lat, valueNumeric: 34.6694 }
+              - column: { name: lon, valueNumeric: 32.7013 }
+
+        - insert:
+            tableName: location
+            columns:
+              - column: { name: name, value: "Le Morne" }
+              - column: { name: country, value: "Mauritius" }
+              - column: { name: lat, valueNumeric: -20.4563 }
+              - column: { name: lon, valueNumeric: 57.3081 }

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,8 @@ class WeatherServiceTest {
     @BeforeEach
     void setUp() {
         weatherbitClientMock = mock(WeatherbitClient.class);
-        weatherService = new WeatherService(weatherbitClientMock);
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        weatherService = new WeatherService(weatherbitClientMock, decimalFormat);
     }
 
     @Test
@@ -89,6 +91,7 @@ class WeatherServiceTest {
         @Test
         @DisplayName("Returns null when all forecasts fail")
         void shouldReturnNull_WhenAllForecastsFail() {
+
             // Arrange
             LocalDate date = LocalDate.now().plusDays(1);
 

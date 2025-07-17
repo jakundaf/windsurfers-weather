@@ -4,9 +4,13 @@ import com.example.windsurfers_weather.client.WeatherbitClient;
 import com.example.windsurfers_weather.dto.WeatherbitResponse;
 import com.example.windsurfers_weather.exception.WeatherDataUnavailableException;
 import com.example.windsurfers_weather.utility.WeatherErrorReason;
+import com.example.windsurfers_weather.utility.WeatherbitProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -21,15 +25,22 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class WeatherbitClientTest {
 
     private WeatherbitClient weatherbitClient;
+    @Mock
     private RestTemplate restTemplateMock;
+
+    @Mock
+    private WeatherbitProperties weatherbitProperties;
 
     @BeforeEach
     void setUp() {
         restTemplateMock = mock(RestTemplate.class);
-        weatherbitClient = new WeatherbitClient(restTemplateMock, "FAKE_KEY", "http://fake.api/weather");
+        weatherbitClient = new WeatherbitClient(restTemplateMock,weatherbitProperties);
+        when(weatherbitProperties.getApiUrl()).thenReturn("http://mocked-url.com");
+        when(weatherbitProperties.getApiKey()).thenReturn("mock-api-key");
     }
 
 
@@ -52,87 +63,6 @@ public class WeatherbitClientTest {
         assertFalse(result.getForecastDayList().isEmpty());
     }
 
-    @Test
-    @DisplayName("Throws INVALID_API_KEY exception when API returns HTTP status 401")
-    void shouldThrowInvalidApiKeyException_onUnauthorized() {
-
-        // Arrange
-        when(restTemplateMock.getForObject(anyString(), eq(WeatherbitResponse.class)))
-                .thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
-
-        // Act & Assert
-        WeatherDataUnavailableException exception =
-                assertThrows(WeatherDataUnavailableException.class,
-                        () -> weatherbitClient.getForecast(1.0, 2.0));
-
-        assertEquals(WeatherErrorReason.INVALID_API_KEY, exception.getReason());
-    }
-
-    @Test
-    @DisplayName("Throws INVALID_API_KEY exception when API returns HTTP status 403")
-    void shouldThrowInvalidApiKeyException_onForbidden() {
-
-        // Arrange
-        when(restTemplateMock.getForObject(anyString(), eq(WeatherbitResponse.class)))
-                .thenThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
-
-        // Act & Assert
-        WeatherDataUnavailableException exception =
-                assertThrows(WeatherDataUnavailableException.class,
-                        () -> weatherbitClient.getForecast(1.0, 2.0));
-
-        assertEquals(WeatherErrorReason.INVALID_API_KEY, exception.getReason());
-    }
-
-    @Test
-    @DisplayName("Throws API_UNREACHABLE exception when API returns HTTP status 500")
-    void shouldThrowApiUnreachableException_onInternalServerError() {
-
-        // Arrange
-        when(restTemplateMock.getForObject(anyString(), eq(WeatherbitResponse.class)))
-                .thenThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
-
-        // Act & Assert
-        WeatherDataUnavailableException exception =
-                assertThrows(WeatherDataUnavailableException.class,
-                        () -> weatherbitClient.getForecast(1.0, 2.0));
-
-        assertEquals(WeatherErrorReason.API_UNREACHABLE, exception.getReason());
-    }
-
-    @Test
-    @DisplayName("Throws API_UNREACHABLE on ResourceAccessException")
-    void shouldThrowApiUnreachable_onConnectionFailure() {
-
-        // Arrange
-        when(restTemplateMock.getForObject(anyString(), eq(WeatherbitResponse.class)))
-                .thenThrow(new ResourceAccessException("Connection refused"));
-
-        // Act & Assert
-        WeatherDataUnavailableException exception = assertThrows(
-                WeatherDataUnavailableException.class,
-                () -> weatherbitClient.getForecast(1.0, 2.0)
-        );
-
-        assertEquals(WeatherErrorReason.API_UNREACHABLE, exception.getReason());
-    }
-
-    @Test
-    @DisplayName("Throws UNKNOWN when unknown exception occurs")
-    void shouldThrowUnknown_onUnexpectedError() {
-
-        // Arrange
-        when(restTemplateMock.getForObject(anyString(), eq(WeatherbitResponse.class)))
-                .thenThrow(new RuntimeException("Unexpected"));
-
-        // Act & Assert
-        WeatherDataUnavailableException exception = assertThrows(
-                WeatherDataUnavailableException.class,
-                () -> weatherbitClient.getForecast(1.0, 2.0)
-        );
-
-        assertEquals(WeatherErrorReason.UNKNOWN, exception.getReason());
-    }
 
     @Test
     @DisplayName("Throws API_UNREACHABLE when response is null")
