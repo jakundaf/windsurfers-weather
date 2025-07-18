@@ -22,7 +22,11 @@ The location with the best surfing conditions is returned for the selected date.
 - [x] Exception handling (e.g., invalid API key, missing data)
 - [x] Unit tests for the service and API layer
 - [x] Integration tests for the controller and API layer
-
+- [x] Validation using `@Valid` and Jakarta Bean Validation
+- [x] Profile-based test configurations (`dev`, `test`)
+- [x] **Kafka integration** – REST endpoint that publishes messages to Kafka topics
+- [x] **Mock controller for best location** in the `dev` profile – always returns Jastarnia
+- [x] **Database integration with Liquibase** – schema and data versioning
 ---
 
 ## 💻 Technologies
@@ -31,6 +35,9 @@ The location with the best surfing conditions is returned for the selected date.
 - Spring Boot 3.5.3
 - Spring Web
 - Spring Validation
+- Kafka (Spring for Apache Kafka)
+- Liquibase
+- H2 / PostgreSQL (configurable)
 - JUnit 5
 - Mockito
 - Maven
@@ -48,14 +55,55 @@ weatherbit:
     url: https://api.weatherbit.io/v2.0/forecast/daily
     key: YOUR_API_KEY_HERE
 ```
+## 🐳 Start Docker infrastructure
+The project uses Docker Compose to start required services:
 
-To run the project use simple Maven commands:
+- PostgreSQL database
+- Apache Kafka
+- Apache Zookeeper (Kafka dependency)
 
+ Run:
+```
+docker-compose up -d
+```
+Once the infrastructure is up, you can run the application with:
+```
 mvn clean install
-
 mvn spring-boot:run
-
+```
 Then API should be available at `http://localhost:8080`
+
+---
+
+## 🔁 Active Profiles
+
+You can launch the app with different profiles using:
+```
+-Dspring.profiles.active=dev
+```
+
+**Dev** profile	enables a mock controller that always returns Jastarnia as the best location. Used for frontend integration and local testing.
+
+**Test** profile loads in-memory test configuration and H2 database.
+
+**Default** fetches real weather data from Weatherbit API.
+
+---
+
+## 🧪 Kafka Integration
+
+The application exposes a REST endpoint to send custom messages to Apache Kafka.
+```
+{
+  "login": "surfer42",
+  "message": "Waves are perfect today!"
+}
+```
+📦 Expected Response:
+```
+Message sent to Kafka.
+```
+Kafka configuration is defined in application.yml and supports sending simple payloads to the configured topic.
 
 ---
 
@@ -81,5 +129,15 @@ GET /api/weather/best-location?date=2025-07-03
   "score": 56.7
 }
 ```
+---
 
+## 🧩 Liquibase Support
+This project uses Liquibase for schema migrations.
+
+On application startup, Liquibase automatically applies schema definitions and inserts initial data (e.g., list of predefined surf locations).
+
+Files are located in:
+```
+src/main/resources/db/changelog/
+```
 ---
