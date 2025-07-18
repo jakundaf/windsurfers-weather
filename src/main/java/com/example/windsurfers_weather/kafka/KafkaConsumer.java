@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class KafkaConsumer {
 
     @KafkaListener(topics = "weather-topic")
-    public void listen(ConsumerRecord<String, String> record){
+    public void listen(ConsumerRecord<String, String> record) {
         log.info("Message from Kafka received: {}", record.value());
     }
 }

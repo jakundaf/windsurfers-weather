@@ -32,7 +32,6 @@
         <appender-ref ref="FILE"/>
     </root>
 
-    <!-- Twój pakiet – więcej szczegółów -->
     <logger name="com.example.windsurfers_weather" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>

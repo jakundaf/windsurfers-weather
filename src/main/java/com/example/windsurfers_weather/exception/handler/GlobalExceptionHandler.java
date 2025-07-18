@@ -6,6 +6,7 @@ import com.example.windsurfers_weather.utility.WeatherErrorReason;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
@@ -77,6 +78,16 @@ public class GlobalExceptionHandler {
                 "timestamp", LocalDate.now(),
                 "error", "Invalid parameter",
                 "message", "Invalid format for '" + e.getName() + "' : '" + e.getValue() + "'"
+        ));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleArgumentValidation(MethodArgumentNotValidException ex) {
+        log.warn("Validation error: {}", ex.getMessage());
+        return ResponseEntity.badRequest().body(Map.of(
+                "timestamp", LocalDate.now(),
+                "error", "Validation error",
+                "message", "Try passing the arguments again"
         ));
     }
 
