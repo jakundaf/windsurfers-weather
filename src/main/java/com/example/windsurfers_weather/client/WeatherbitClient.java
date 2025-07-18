@@ -37,12 +37,12 @@ public class WeatherbitClient {
 
         log.info("Requesting weather forecast for lat={}, lon={}", lat, lon);
 
-            WeatherbitResponse response = restTemplate.getForObject(url, WeatherbitResponse.class);
+        WeatherbitResponse response = restTemplate.getForObject(url, WeatherbitResponse.class);
 
-            if (response == null || response.getForecastDayList() == null) {
-                log.warn("Empty response from Weatherbit API for lat={}, lon={}", lat, lon);
-                throw new WeatherDataUnavailableException(lat, lon, WeatherErrorReason.API_UNREACHABLE);
-            }
-            return response;
+        if (response == null || response.getForecastDayList() == null) {
+            log.warn("Empty response from Weatherbit API for lat={}, lon={}", lat, lon);
+            throw new WeatherDataUnavailableException(lat, lon, WeatherErrorReason.API_UNREACHABLE);
+        }
+        return response;
     }
 }

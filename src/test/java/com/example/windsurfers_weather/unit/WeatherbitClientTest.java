@@ -11,10 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -38,7 +34,7 @@ public class WeatherbitClientTest {
     @BeforeEach
     void setUp() {
         restTemplateMock = mock(RestTemplate.class);
-        weatherbitClient = new WeatherbitClient(restTemplateMock,weatherbitProperties);
+        weatherbitClient = new WeatherbitClient(restTemplateMock, weatherbitProperties);
         when(weatherbitProperties.getApiUrl()).thenReturn("http://mocked-url.com");
         when(weatherbitProperties.getApiKey()).thenReturn("mock-api-key");
     }
